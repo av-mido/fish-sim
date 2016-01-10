@@ -19,8 +19,6 @@ class CanvasClass
     console.log('resizeCanvas. document: ' + document)
     console.log('resizeCanvas. canvas: ' + canvas)
     context = canvas.getContext('2d');
-    alert "3"
-    alert "window was resized!";
 
   test_fn: =>
     alert "test!"
