@@ -3,11 +3,16 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 class Creature
-  constructor: (@x, @y) ->
+  constructor: (@x, @y, @color) ->
     zzz = 2+2
 
+  doAntiGravityCalculations: =>
+    # https://stackoverflow.com/questions/874875/basic-pathfinding-with-obstacle-avoidance-in-a-continuous-2d-space
+    @x = @x + 1
+    @y = @y + 1
+
 class Food
-  constructor: (@x, @y) ->
+  constructor: (@x, @y, @color) ->
     zzz = 3+3
 
 class DrawStateClass
@@ -19,8 +24,9 @@ class DrawStateClass
     console.log('constructor. canvas: ' + @canvas)
     $(window).resize(@resizeCanvas)
 
-    @creatures = [new Creature(3,3), new Creature(7,7)]
-    @foods = [new Food(100, 100)]
+    @creatures = [new Creature(3,3,'red'), new Creature(70,70,'green')]
+    @foods = [new Food(100, 100, 'yellow')]
+    @cur_creature_idx = 0
 
   # resize_canvas_and_draw: =>
   #   canvas = $(document).getElementById('main_canvas')
@@ -41,9 +47,22 @@ class DrawStateClass
     @canvas.height = window.innerHeight;
     @drawStuff()
 
-  drawStuff: =>
-    @context.clearRect(0, 0, @canvas.width, @canvas.height)
-    
+  drawStuff: () =>
+    # Calculations for one creature at a time.
+    console.log(@cur_creature_idx)
+    calc_creature = @creatures[@cur_creature_idx]
+    calc_creature.doAntiGravityCalculations()
+    # Drawing
+    @context.clearRect(0, 0, @canvas.width, @canvas.height) 
+    for draw_creature in @creatures
+      @context.beginPath(); 
+      @context.arc(draw_creature.x, draw_creature.y, 10, 0, 2 * Math.PI, false)
+      @context.fillStyle = draw_creature.color
+      @context.closePath()
+      @context.fill()
+    # Recursive loop
+    @cur_creature_idx = (@cur_creature_idx + 1) % @creatures.length
+    window.requestAnimationFrame(@drawStuff)
 
 
 
