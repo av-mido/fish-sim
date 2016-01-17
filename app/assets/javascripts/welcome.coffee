@@ -2,36 +2,58 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-class CanvasClass
+class Creature
+  constructor: (@x, @y) ->
+    zzz = 2+2
+
+class Food
+  constructor: (@x, @y) ->
+    zzz = 3+3
+
+class DrawStateClass
   constructor: (@name) ->
-    console.log('CanvasClass constructor was called')
-    # @resize_canvas_and_draw()
+    console.log('DrawStateClass constructor was called')
+    @canvas = $('#canvas')[0]
+    @context = @canvas.getContext('2d');
+    console.log('constructor. document: ' + document)
+    console.log('constructor. canvas: ' + @canvas)
+    $(window).resize(@resizeCanvas)
 
-  resize_canvas_and_draw: =>
-    canvas = $(document).getElementById('main_canvas')
-    context = canvas.getContext('2d')
+    @creatures = [new Creature(3,3), new Creature(7,7)]
+    @foods = [new Food(100, 100)]
 
-    # resize the canvas to fill browser window dynamically
-    window.addEventListener('resize', @resizeCanvas, false);
+  # resize_canvas_and_draw: =>
+  #   canvas = $(document).getElementById('main_canvas')
+  #   context = canvas.getContext('2d')
+  #   # resize the canvas to fill browser window dynamically
+  #   window.addEventListener('resize', @resizeCanvas, false);
+
+  outer_initializer: =>
+    # canvas = $('#canvas')[0] # $(document)[0].getElementById('canvas')
+    console.log('outer_initializer')
+    @resizeCanvas()
+    
+    
 
   resizeCanvas: =>
-    canvas = $('#canvas')[0] # $(document)[0].getElementById('canvas') # $('#canvas')[0]
-    console.log('resizeCanvas. document: ' + document)
-    console.log('resizeCanvas. canvas: ' + canvas)
-    context = canvas.getContext('2d');
+    console.log('resizeCanvas was called!')
+    @canvas.width = window.innerWidth;
+    @canvas.height = window.innerHeight;
+    @drawStuff()
 
-  test_fn: =>
-    alert "test!"
+  drawStuff: =>
+    @context.clearRect(0, 0, @canvas.width, @canvas.height)
+    
 
-ready = ->
-  animal = new CanvasClass("canvas name!")
-  console.log('ready\'s document: ' + document)
+
+
+ready_fn = ->
+  console.log('entered ready_fn')
+  animal = new DrawStateClass("canvas name!")
   console.log(document.getElementById('canvas'))
-  animal.resizeCanvas()
+  animal.outer_initializer()
 
-
-
-$(document).ready(ready)
+$(document).ready(ready_fn)
 # $(document).on('page:load', ready)
 # ###### http://www.ibm.com/developerworks/library/wa-coffee3/
 # alert "Animal is a #{animal.name}"
