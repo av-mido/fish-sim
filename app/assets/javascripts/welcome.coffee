@@ -2,61 +2,8 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-class Creature
-  constructor: (@id, @x, @y, @color) ->
-    @power = 50
-    @power_exp = 3
-
-  doAntiGravityCalculations: (foods, creatures) =>
-    # https://stackoverflow.com/questions/874875/basic-pathfinding-with-obstacle-avoidance-in-a-continuous-2d-space
-    # http://www.ibm.com/developerworks/java/library/j-antigrav/
-    # @x = @x + 1
-    # @y = @y + 1
-    xforce = 0
-    yforce = 0
-    for food in foods
-      [xf, yf] = @calcForces(food)
-      xforce += xf
-      yforce += yf
-    for creature in creatures
-      # Dont apply forces to yourself
-      if creature.id != @id
-        [xf, yf] = @calcForces(creature)
-        xforce -= xf
-        yforce -= yf
-    @move(xforce, yforce)
-
-  move: (xforce, yforce) =>
-    # console.log("sum forces: ", @id, @color, xforce, yforce)
-    # if Math.abs(xforce) < 0.0001
-    @x = @x - (xforce && xforce / Math.abs(xforce)) 
-    @y = @y - (yforce && yforce / Math.abs(yforce))
-
-  calcForces: (obj) =>
-    force = obj.power/Math.pow(@getRange(@x,@y,obj.x,obj.y),obj.power_exp);
-    ang = Math.PI/2 - Math.atan2(@y - obj.y, @x - obj.x)
-    # console.log(@x, @y, ang)
-    xforce = Math.sin(ang) * force;
-    yforce = Math.cos(ang) * force;
-    # console.log(@id, obj.color, xforce, yforce)
-    if isNaN(xforce)
-      xforce = 0
-    if isNaN(yforce)
-      yforce = 0
-    return [xforce, yforce]
-
-  # Returns the distance between two points**/
-  getRange: (x1, y1,  x2, y2) =>
-    x = x2-x1;
-    y = y2-y1;
-    range = Math.sqrt(x*x + y*y);
-    # console.log(range)
-    return range; 
-
-class Food
-  constructor: (@id, @x, @y, @color) ->
-    @power = 10
-    @power_exp = 2
+# @app is based on https://stackoverflow.com/questions/6150455/structuring-coffeescript-code
+@app = window.app ? {}
 
 class DrawStateClass
   constructor: (@name) ->
@@ -67,15 +14,9 @@ class DrawStateClass
     console.log('constructor. canvas: ' + @canvas)
     $(window).resize(@resizeCanvas)
 
-    @creatures = [new Creature(0, 3,3,'red'), new Creature(1, 70,70,'green')]
-    @foods = [new Food(100, 100, 100, 'yellow')]
+    @creatures = [new app.Creature(0, 3,3,'red'), new app.Creature(1, 70,70,'green')]
+    @foods = [new app.Food(100, 100, 100, 'yellow')]
     @cur_creature_idx = 0
-
-  # resize_canvas_and_draw: =>
-  #   canvas = $(document).getElementById('main_canvas')
-  #   context = canvas.getContext('2d')
-  #   # resize the canvas to fill browser window dynamically
-  #   window.addEventListener('resize', @resizeCanvas, false);
 
   outer_initializer: =>
     # canvas = $('#canvas')[0] # $(document)[0].getElementById('canvas')
@@ -124,7 +65,7 @@ class DrawStateClass
       rand_x = @rand_int(@canvas.width)
       rand_y = @rand_int(@canvas.height)
       console.log(rand_id, rand_x, rand_y)
-      @foods.push(new Food(rand_id, rand_x, rand_y, 'yellow'))
+      @foods.push(new app.Food(rand_id, rand_x, rand_y, 'yellow'))
 
   rand_int: (max) ->
     rand_x = Math.floor(Math.random() * (max - 0 + 1)) + 0
