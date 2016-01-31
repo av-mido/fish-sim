@@ -15,6 +15,8 @@ class DrawStateClass
     $(window).resize(@resizeCanvas)
 
     @creatures = [new app.Creature(0, 3,3,'red'), new app.Creature(1, 70,70,'green')]
+    for i in [2..50]
+      @creatures.push(new app.Creature(i, @rand_int(@canvas.width),@rand_int(@canvas.height), 'blue'))
     @foods = [new app.Food(100, 100, 100, 'yellow')]
     @cur_creature_idx = 0
 
@@ -24,7 +26,7 @@ class DrawStateClass
     @resizeCanvas()
     
     
-
+  # Note this is called on $(window).resize 
   resizeCanvas: =>
     console.log('resizeCanvas was called!')
     @canvas.width = window.innerWidth;
@@ -34,8 +36,9 @@ class DrawStateClass
   drawStuff: () =>
     # Calculations for one creature at a time.
     # console.log(@cur_creature_idx)
-    calc_creature = @creatures[@cur_creature_idx]
-    calc_creature.doAntiGravityCalculations(@foods, @creatures)
+    # calc_creature = @creatures[@cur_creature_idx]
+    for creature in @creatures
+      creature.doAntiGravityCalculations(@foods, @creatures)
     @spawn_delete_food()
     # Drawing
     @context.clearRect(0, 0, @canvas.width, @canvas.height) 

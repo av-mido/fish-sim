@@ -3,8 +3,8 @@
 
 class app.Creature
   constructor: (@id, @x, @y, @color) ->
-    @power = 50
-    @power_exp = 3
+    @power = 5000 # 50
+    @power_exp = 6 # 3
     @movement_magnitude = 5.0
     @previous_move = [5,0]
 
@@ -28,15 +28,21 @@ class app.Creature
     @move(xforce, yforce)
 
   move: (xforce, yforce) =>
-    # console.log("sum forces: ", @id, @color, xforce, yforce)
-    # if Math.abs(xforce) < 0.0001
-    x_sign = (xforce && xforce / Math.abs(xforce)) 
-    y_sign = (yforce && yforce / Math.abs(yforce))
+    # x_sign = (xforce && xforce / Math.abs(xforce)) 
+    # y_sign = (yforce && yforce / Math.abs(yforce))
     # scaler comes from the formula: sqrt((ax)^2 + (ay)^2) = c
     #      where 'c' is a constant length vector.
-    scaler = @movement_magnitude / (Math.sqrt(xforce*xforce + yforce*yforce))
-    @x = @x - scaler*xforce
-    @y = @y - scaler*yforce
+    [scaled_x, scaled_y] = @getScaledVector(xforce, yforce)
+    avg_x = (@previous_move[0] + scaled_x) / 2.0
+    avg_y = (@previous_move[1] + scaled_y) / 2.0
+    [avg_x, avg_y] = @getScaledVector(avg_x, avg_y)
+    @x = @x - avg_x
+    @y = @y - avg_y
+    @previous_move = [avg_x, avg_y]
+
+  getScaledVector: (x, y) =>
+    scaler = @movement_magnitude / (Math.sqrt(x*x + y*y))
+    return [scaler*x, scaler*y]
 
   calcForces: (obj) =>
     force = obj.power/Math.pow(@getRange(@x,@y,obj.x,obj.y),obj.power_exp);
