@@ -2,6 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+# btw dev is localhost:3000
 # @app is based on https://stackoverflow.com/questions/6150455/structuring-coffeescript-code
 @app = window.app ? {}
 
