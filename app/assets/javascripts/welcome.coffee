@@ -64,7 +64,7 @@ class DrawStateClass
       for food in @foods
         if creature.getRange(creature.x, creature.y, food.x, food.y) < 5
           @foods = @foods.filter (f) -> f.id != food.id
-    if @foods.length == 0
+    while @foods.length < 10
       rand_id = @rand_int(999999)
       rand_x = @rand_int(@canvas.width)
       rand_y = @rand_int(@canvas.height)
