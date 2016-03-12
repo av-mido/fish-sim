@@ -8,14 +8,14 @@
 
 class DrawStateClass
   constructor: (@name) ->
-    console.log('DrawStateClass constructor was called')
+   # console.log('DrawStateClass constructor was called')
     @canvas = $('#canvas')[0]
     @context = @canvas.getContext('2d');
-    console.log('constructor. document: ' + document)
-    console.log('constructor. canvas: ' + @canvas)
+   # console.log('constructor. document: ' + document)
+   # console.log('constructor. canvas: ' + @canvas)
     $(window).resize(@resizeCanvas)
 
-    @creatures = [new app.Creature(0, 3,3,'red'), new app.Creature(1, 70,70,'green')]
+    @creatures = [new app.Creature(0, 3,3,'red'), new app.Creature(1, 70,70,'purple')]
     for i in [2..50]
       @creatures.push(new app.Creature(i, @rand_int(@canvas.width),@rand_int(@canvas.height), 'blue'))
     @foods = [new app.Food(100, 100, 100, 'yellow')]
@@ -23,20 +23,20 @@ class DrawStateClass
 
   outer_initializer: =>
     # canvas = $('#canvas')[0] # $(document)[0].getElementById('canvas')
-    console.log('outer_initializer')
+   # console.log('outer_initializer')
     @resizeCanvas()
     
     
   # Note this is called on $(window).resize 
   resizeCanvas: =>
-    console.log('resizeCanvas was called!')
+   # console.log('resizeCanvas was called!')
     @canvas.width = window.innerWidth;
     @canvas.height = window.innerHeight;
     @drawStuff()
 
   drawStuff: () =>
     # Calculations for one creature at a time.
-    # console.log(@cur_creature_idx)
+    ## console.log(@cur_creature_idx)
     # calc_creature = @creatures[@cur_creature_idx]
     for creature in @creatures
       creature.doAntiGravityCalculations(@foods, @creatures)
@@ -68,7 +68,7 @@ class DrawStateClass
       rand_id = @rand_int(999999)
       rand_x = @rand_int(@canvas.width)
       rand_y = @rand_int(@canvas.height)
-      console.log(rand_id, rand_x, rand_y)
+     # console.log(rand_id, rand_x, rand_y)
       @foods.push(new app.Food(rand_id, rand_x, rand_y, 'yellow'))
 
   rand_int: (max) ->
@@ -76,9 +76,9 @@ class DrawStateClass
 
 
 ready_fn = ->
-  console.log('entered ready_fn')
+ # console.log('entered ready_fn')
   animal = new DrawStateClass("canvas name!")
-  console.log(document.getElementById('canvas'))
+ # console.log(document.getElementById('canvas'))
   animal.outer_initializer()
 
 $(document).ready(ready_fn)
