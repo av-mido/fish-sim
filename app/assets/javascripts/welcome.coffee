@@ -25,6 +25,7 @@ class DrawStateClass
     # canvas = $('#canvas')[0] # $(document)[0].getElementById('canvas')
    # console.log('outer_initializer')
     @resizeCanvas()
+    @drawStuff()
     
     
   # Note this is called on $(window).resize 
@@ -32,7 +33,6 @@ class DrawStateClass
    # console.log('resizeCanvas was called!')
     @canvas.width = window.innerWidth;
     @canvas.height = window.innerHeight;
-    @drawStuff()
 
   drawStuff: () =>
     # Calculations for one creature at a time.
