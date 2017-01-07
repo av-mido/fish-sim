@@ -1,11 +1,19 @@
 == README
 
+Deployed to http://avasilyev.org
+
+
+
+== TODO
+
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
 Things you may want to cover:
 
 * Ruby version
+** ruby 2.2.3p173 (2015-08-18 revision 51636) [x86_64-darwin14]
+** Rails 4.2.4
 
 * System dependencies
 
